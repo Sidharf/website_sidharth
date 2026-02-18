@@ -1,0 +1,43 @@
+{
+  "_metadata": {
+    "project": "website_sidharth",
+    "file": "03_api_keys.json",
+    "description": "API Keys (ENV-first; no secrets in repo)",
+    "generated": "2026-02-18T02:04:23.786Z",
+    "notes": {
+      "api_documentation": "Many integrated APIs have documentation available directly in Cursor. Use @Docs to access SDK references for: Supabase, Stripe, Twilio, Resend, and other supported services.",
+      "security_warning": "Keep this file secure! It contains sensitive credentials. Never commit to public repositories. Add to .gitignore if stored locally. service_role_key should ONLY be used server-side.",
+      "supabase_setup": [
+        "1. Install the client library: npm install @supabase/supabase-js",
+        "2. Copy env_local content to your .env.local file",
+        "3. Initialize client with EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_KEY"
+      ],
+      "policy": [
+        "Do not store secrets in this file in real repositories.",
+        "For Expo, only variables prefixed EXPO_PUBLIC_ are bundled to the client.",
+        "All non-EXPO_PUBLIC_ keys are server-only (Supabase Edge Functions, Node backend, or secure proxy)."
+      ]
+    },
+    "version": "2.0"
+  },
+  "env": {
+    "expo_public": {
+      "EXPO_PUBLIC_SUPABASE_URL": "",
+      "EXPO_PUBLIC_SUPABASE_ANON_KEY": ""
+    },
+    "server_only": {
+      "SUPABASE_SERVICE_ROLE_KEY": ""
+    }
+  },
+  "service_boundaries": {
+    "supabase": {
+      "client_safe": [
+        "url",
+        "anon_key"
+      ],
+      "server_only": [
+        "service_role_key"
+      ]
+    }
+  }
+}

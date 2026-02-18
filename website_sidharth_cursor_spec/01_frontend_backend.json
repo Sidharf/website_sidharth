@@ -1,0 +1,226 @@
+{
+  "_metadata": {
+    "project": "website_sidharth",
+    "file": "01_frontend_backend.json",
+    "description": "Frontend, Backend & Screen Connections",
+    "generated": "2026-02-18T02:04:23.786Z",
+    "notes": {
+      "frontend_frameworks": {
+        "mobile_app": "React Native (Expo)",
+        "desktop_app": "Electron",
+        "website": "Next.js"
+      },
+      "backend_priorities": [
+        "1. Primary: Minimize total cost at scale",
+        "2. Secondary: Minimize latency",
+        "3. Tertiary: Minimize architectural complexity"
+      ],
+      "screen_connections": "The screens section defines navigation flow - each screen's number, platform type, and connections_to array showing which screens it can navigate to",
+      "codegen_contract": {
+        "non_negotiables": [
+          "Exactly one NavigationContainer at app root (App.tsx).",
+          "No NavigationContainer inside /screens or /components.",
+          "All navigators live in /navigation. Screens are pure views.",
+          "Routes are generated from screens[].number; route names are stable like 'S1', 'S2', ...",
+          "connections_to defines allowed navigation edges; do not add edges."
+        ],
+        "react_navigation_stack": "Use @react-navigation/native-stack for mobile unless spec requires otherwise.",
+        "file_structure": [
+          "App.tsx (root providers + NavigationContainer)",
+          "navigation/AppNavigator.tsx (route registry + navigators)",
+          "screens/S<number>Screen.tsx (pure UI, no navigator creation)"
+        ]
+      }
+    },
+    "version": "2.0"
+  },
+  "frontend": {
+    "platforms": [
+      {
+        "type": "website",
+        "framework": "Next.js",
+        "screens": [
+          1,
+          2
+        ]
+      }
+    ],
+    "design_specs": {
+      "colors": {
+        "accent": {
+          "accent_1": "#FF8A65",
+          "accent_2": "#5DA9FF",
+          "accent_3": "#4CD3A1"
+        },
+        "neutral": {
+          "border": "#E6EAF0",
+          "surface": "#FFFFFF",
+          "background": "#F7F9FB",
+          "primary_text": "#1F2933",
+          "secondary_text": "#6B7280"
+        },
+        "primary": {
+          "primary_1": "#3EC6B6",
+          "primary_2": "#8B6DFF"
+        }
+      },
+      "fonts": {
+        "body": "Sans-serif",
+        "display": "Inter"
+      },
+      "general_guidance": "Make the design trendy, modern, eye catching, and consistent"
+    }
+  },
+  "backend": {
+    "platform": "Supabase",
+    "project_url": "",
+    "credentials": {
+      "anon_key": "",
+      "service_role_key": ""
+    },
+    "global_guidance": {
+      "primary_objective": "minimize total cost at scale",
+      "secondary": "minimize latency",
+      "tertiary": "minimize architectural complexity"
+    }
+  },
+  "screens": [
+    {
+      "number": 1,
+      "type": "website",
+      "framework": "Next.js",
+      "screen_function": "This is the first screen on the website",
+      "connections_to": [
+        2
+      ],
+      "screen_role": "generic",
+      "navigation_class": "stack_leaf",
+      "composition_mode": "feature_layout",
+      "auth_required": false
+    },
+    {
+      "number": 2,
+      "type": "website",
+      "framework": "Next.js",
+      "screen_function": "Screen 2 (TODO: define role)",
+      "connections_to": [],
+      "screen_role": "generic",
+      "navigation_class": "stack_leaf",
+      "composition_mode": "feature_layout",
+      "auth_required": false
+    }
+  ],
+  "spec_testing_guidance": {
+    "overview": "When building from these spec files, follow this testing guidance to ensure robust implementation.",
+    "mental_model": {
+      "description": "Use the interface promise mental model for testing",
+      "components": [
+        "Public Inputs: Parameters passed to functions/APIs",
+        "Public Outputs: Return values, state changes, UI updates",
+        "Private Internals: Implementation details (ignore unless exposed)"
+      ],
+      "rule": "Write tests to verify the promise of \"given these inputs, produce these outputs\" without testing internal mechanics."
+    },
+    "test_categories": {
+      "1_unit_tests": {
+        "description": "Test individual functions and components in isolation",
+        "guidance": [
+          "Mock all external dependencies (APIs, databases, services)",
+          "Test each function's inputs → outputs contract",
+          "Cover edge cases: empty inputs, boundary values, invalid data",
+          "Test error handling and validation logic"
+        ]
+      },
+      "2_integration_tests": {
+        "description": "Test how components work together",
+        "guidance": [
+          "Test API endpoints with actual database (use test database)",
+          "Verify data flows correctly between components",
+          "Test authentication/authorization flows end-to-end",
+          "Validate screen navigation matches connections_to arrays"
+        ]
+      },
+      "3_api_contract_tests": {
+        "description": "Verify external API integrations work correctly",
+        "guidance": [
+          "Mock external API responses for unit tests",
+          "Create contract tests that verify API shape hasn't changed",
+          "Test error scenarios: timeouts, rate limits, invalid responses",
+          "Validate API key/credential handling"
+        ]
+      },
+      "4_state_management_tests": {
+        "description": "Test application state changes",
+        "guidance": [
+          "Verify state updates correctly on user actions",
+          "Test optimistic updates and rollback scenarios",
+          "Validate state persistence (local storage, database)",
+          "Test state synchronization across components"
+        ]
+      },
+      "5_ui_component_tests": {
+        "description": "Test visual components and user interactions",
+        "guidance": [
+          "Test component renders correctly with various props",
+          "Verify user interactions trigger correct callbacks",
+          "Test loading, error, and empty states",
+          "Validate accessibility (screen readers, keyboard nav)"
+        ]
+      },
+      "6_navigation_tests": {
+        "description": "Test screen flows match spec definitions",
+        "guidance": [
+          "Verify each screen's connections_to navigations work",
+          "Test deep linking and URL routing",
+          "Validate navigation guards (auth required screens)",
+          "Test back navigation and history management"
+        ]
+      },
+      "7_feature_placement_tests": {
+        "description": "Verify features appear on correct screens",
+        "guidance": [
+          "Cross-reference spec positions with rendered screens",
+          "Test feature visibility based on user permissions",
+          "Validate grid_position guidance is reasonably followed",
+          "Test responsive behavior across screen sizes"
+        ]
+      },
+      "8_backend_schema_tests": {
+        "description": "Test database operations and data integrity",
+        "guidance": [
+          "Verify CRUD operations work correctly",
+          "Test Row Level Security (RLS) policies",
+          "Validate data migrations and schema changes",
+          "Test concurrent access and race conditions"
+        ]
+      }
+    },
+    "implementation_priority": [
+      "1. Start with unit tests for core business logic",
+      "2. Add integration tests for critical user flows",
+      "3. Implement API contract tests for external services",
+      "4. Add UI tests for key user interactions",
+      "5. Expand coverage based on bug reports and edge cases"
+    ]
+  },
+  "navigation_policy": {
+    "route_naming": {
+      "pattern": "S{number}",
+      "example": "S8"
+    },
+    "root_navigator": "AppNavigator",
+    "mobile_navigator": "NativeStack",
+    "desktop_navigator": "ElectronRouter",
+    "linking": {
+      "enabled": false,
+      "notes": "Enable later if needed; do not implement deep linking unless explicitly requested."
+    },
+    "guards": {
+      "auth_required_screens": [],
+      "public_screens": [
+        1,
+        2
+      ]
+    }
+  }
+}

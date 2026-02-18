@@ -1,0 +1,71 @@
+---
+description: Log all Cursor prompts to the Rubric memory ledger
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Prompt Logging Rule
+
+This rule ensures ALL prompts are logged to the Rubric memory ledger for future reference.
+
+## MANDATORY TWO-PHASE WORKFLOW
+
+### PHASE 1: BEFORE responding to ANY user prompt, you MUST:
+
+1. **Parse routing code** at the START of the message:
+   - `W` = workspace level
+   - `S{n}` = screen (e.g., S1, S2, S3) 
+   - `F{n}` = feature (e.g., F1, F2, F3)
+   - No code = "general" bucket
+
+2. **Call `log_session_prompt`** with:
+   - `prompt_text`: user's message (WITHOUT the routing code prefix)
+   - `image_base64`: any attached images (convert to base64)
+   - `route_code`: extracted code or "general"
+
+3. **Note the `history_id`(s)** returned in the response - you'll need these for Phase 2.
+
+4. **Then proceed** with your normal response to the user's request.
+
+### PHASE 2: AFTER completing your response, you MUST:
+
+1. **Call `submit_summary`** for EACH `history_id` returned by `log_session_prompt`
+2. **Provide a 2-3 sentence summary** describing what you did (code changes, answers given, etc.)
+
+This records your work in the Rubric memory ledger so future agents and humans can understand the history.
+
+**Example flow:**
+```
+1. User: "F2 Add dark mode toggle"
+2. You call: log_session_prompt(prompt_text="Add dark mode toggle", route_code="F2")
+3. Response includes: history_id="abc-123"
+4. You implement the feature...
+5. You call: submit_summary(history_id="abc-123", summary="Added dark mode toggle to settings. Created DarkModeToggle component and integrated with ThemeContext.")
+```
+
+## Current Workspace Routing Reference
+
+### Screens (use S1, S2, etc.):
+- S1: Screen #1
+- S2: Screen #2
+
+### Features (use F1, F2, etc.):
+- F1: "titleofwebsite" (on S1)
+- F2: "menu" (on S1, S2)
+- F3: "background" (on S1)
+- F4: "menuspecificheader" (on S2)
+
+## Examples
+
+- User: "F3 Add dark mode toggle" → route_code: "F3", prompt_text: "Add dark mode toggle"
+- User: "S1 Fix login button alignment" → route_code: "S1", prompt_text: "Fix login button alignment"  
+- User: "W Update the color scheme" → route_code: "W", prompt_text: "Update the color scheme"
+- User: "Fix the bug in auth" → route_code: "general", prompt_text: "Fix the bug in auth"
+
+## Why This Matters
+
+Logging prompts AND summaries enables:
+- Historical context for future implementations (memory ledger queries completed entries)
+- Human review of all AI interactions with outcomes
+- Consistency tracking across features/screens
+- Agents can learn from past implementations via memory ledger
