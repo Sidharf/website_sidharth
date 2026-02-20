@@ -11,9 +11,9 @@ const menuItems = [
 ];
 
 const socialItems = [
-  { label: 'GitHub', link: 'https://github.com' },
-  { label: 'LinkedIn', link: 'https://linkedin.com' },
-  { label: 'Twitter', link: 'https://twitter.com' },
+  { label: 'GitHub', link: 'https://github.com/Sidharf' },
+  { label: 'LinkedIn', link: 'https://www.linkedin.com/in/sirdeshmukh/' },
+  { label: 'Twitter', link: 'https://x.com/sidharf' },
 ];
 
 const sectionContent: Record<string, { heading: string; description: string; items: string[] }> = {
