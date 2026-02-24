@@ -48,7 +48,16 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
   const ready = spacing > 0;
 
   useEffect(() => {
-    if (measureRef.current) setSpacing(measureRef.current.getComputedTextLength());
+    const measure = () => {
+      if (measureRef.current) {
+        const len = measureRef.current.getComputedTextLength();
+        if (len > 0) setSpacing(len);
+      }
+    };
+    measure();
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(measure);
+    }
   }, [text, className]);
 
   useEffect(() => {

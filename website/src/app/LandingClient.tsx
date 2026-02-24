@@ -3,6 +3,7 @@
 import CurvedLoop from '@/components/features/CurvedLoop/CurvedLoop';
 import StaggeredMenu from '@/components/features/StaggeredMenu/StaggeredMenu';
 import PixelTrail from '@/components/features/PixelTrail/PixelTrail';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const menuItems = [
   { label: 'Writing', ariaLabel: 'View writing', link: '/writing' },
@@ -21,14 +22,16 @@ export default function LandingClient() {
   return (
     <>
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        <PixelTrail
-          gridSize={50}
-          trailSize={0.1}
-          maxAge={250}
-          interpolate={5}
-          color="#5227FF"
-          gooeyFilter={{ id: 'pixel-trail-goo', strength: 2 }}
-        />
+        <ErrorBoundary>
+          <PixelTrail
+            gridSize={50}
+            trailSize={0.1}
+            maxAge={250}
+            interpolate={5}
+            color="#5227FF"
+            gooeyFilter={{ id: 'pixel-trail-goo', strength: 2 }}
+          />
+        </ErrorBoundary>
       </div>
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh' }}>
         <StaggeredMenu
